@@ -1,7 +1,8 @@
 #include "Flourish.h"
+#include "Led.h"
 
-Flourish::Flourish(uint8_t numLEDs, uint8_t red, uint8_t green, uint8_t blue) {
-  _numLEDs = numLEDs;
+Flourish::Flourish(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue) {
+  _numLeds = numLeds;
   _red = red;
   _green = green;
   _blue = blue;
@@ -11,13 +12,16 @@ bool Flourish::complete() {
   return false;
 }
 
-std::list<Frame> Flourish::render() {
-  std::list<Frame> frames = std::list<Frame>();
+std::vector<Led> Flourish::render() {
+  std::vector<Led> leds = std::vector<Led>();
 
-  for (int i = 0; i < _numLEDs; i++) {
-    Frame frame = {0, 0, 0};
-    frames.push_back(frame);
+  for (int i = 0; i < _numLeds; i++) {
+    Led led = Led(i, 0, 0, 0);
+    leds.push_back(led);
   }
 
-  return frames;
+  return leds;
+}
+
+void Flourish::tick() {
 }

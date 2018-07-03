@@ -10,7 +10,7 @@ Flourish::Flourish(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 bool Flourish::complete() {
-  return false;
+  return _currentFrameNumber >= _numLeds;
 }
 
 std::vector<Led> Flourish::render() {

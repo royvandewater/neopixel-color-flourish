@@ -5,12 +5,20 @@
 
 namespace {
   TEST(FlourishTest, construction) {
-    EXPECT_NO_THROW(Flourish(4, 0, 0, 0));
+    EXPECT_NO_THROW(Flourish(4, 255, 0, 0));
   }
 
   TEST(FlourishTest, completeWhenJustStarted) {
-    Flourish sut = Flourish(4, 0, 0, 0);
+    Flourish sut = Flourish(4, 255, 0, 0);
     EXPECT_FALSE(sut.complete());
+  }
+
+  TEST(FlourishTest, completeWhenFinished) {
+    Flourish sut = Flourish(4, 255, 0, 0);
+    for (int i=0; i<5; i++) {
+      sut.tick();
+    }
+    EXPECT_TRUE(sut.complete());
   }
 
   TEST(FlourishTest, renderWhenJustStartedShouldReset) {

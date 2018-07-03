@@ -16,6 +16,9 @@ private:
   uint8_t _red;
   uint8_t _green;
   uint8_t _blue;
+  uint32_t _currentFrameNumber;
+
+  Led _renderLed(uint32_t ledNumber);
 };
 
 #endif

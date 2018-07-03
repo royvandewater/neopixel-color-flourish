@@ -5,12 +5,12 @@
 
 struct Led {
 public:
-  uint8_t frameNumber;
+  uint8_t ledNumber;
   uint8_t red;
   uint8_t green;
   uint8_t blue;
 
-  Led(uint8_t frameNumber, uint8_t red, uint8_t green, uint8_t blue);
+  Led(uint8_t ledNumber, uint8_t red, uint8_t green, uint8_t blue);
 };
 
 bool operator==(Led left, Led right);

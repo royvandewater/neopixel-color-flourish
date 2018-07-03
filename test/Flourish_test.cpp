@@ -1,5 +1,6 @@
 #include "../src/Flourish.h"
 #include "gtest/gtest.h"
+#include <list>
 
 namespace {
   TEST(FlourishTest, construction) {
@@ -11,7 +12,10 @@ namespace {
     EXPECT_FALSE(sut.complete());
   }
 
-  // Test(FlourishTest, renderWhenJustStarted) {
-  //   EXPECT_COUNT
-  // }
+  TEST(FlourishTest, renderWhenJustStarted) {
+    Flourish sut = Flourish(4, 0, 0, 0);
+    std::list<Frame> frames = sut.render();
+
+    EXPECT_EQ(4, frames.size());
+  }
 }

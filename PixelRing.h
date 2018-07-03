@@ -7,22 +7,22 @@
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
+#include <Flourish.h>
 
 class PixelRing {
 public:
-  PixelRing(int pin, int numberOfLEDs);
+  PixelRing(uint8_t pin, uint8_t numberOfLEDs);
   bool animationComplete();
   void begin();
-  void flourish(uint32_t color);
+  void flourish(uint8_t red, uint8_t green, uint8_t blue);
   void render();
 
-  static uint32_t Color(uint8_t r, uint8_t g, uint8_t b);
-  static uint32_t RandomColor();
 private:
   int _pin;
   int _numberOfLEDs;
   uint32_t _currentColor;
   Adafruit_NeoPixel _ring;
+  Flourish _animation;
 };
 
 #endif

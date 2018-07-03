@@ -7,6 +7,7 @@
 
 class Flourish {
 public:
+  Flourish();
   Flourish(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue);
   bool complete();
   std::vector<Led> render();

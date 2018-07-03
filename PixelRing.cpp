@@ -1,41 +1,36 @@
 #include "Arduino.h"
 #include "PixelRing.h"
+#include <Flourish.h>
+#include <Led.h>
 
-PixelRing::PixelRing(int pin, int numberOfLEDs) {
+PixelRing::PixelRing(uint8_t pin, uint8_t numberOfLEDs) {
   _ring = Adafruit_NeoPixel(numberOfLEDs, pin, NEO_GRB + NEO_KHZ800);
   _numberOfLEDs = numberOfLEDs;
-  _currentColor = PixelRing::Color(64, 64, 0);
+  _animation = Flourish(numberOfLEDs, 0, 0, 0);
 }
 
 bool PixelRing::animationComplete() {
-  return true;
+  return _animation.complete();
 }
 
 void PixelRing::begin() {
   _ring.begin();
 }
 
-void PixelRing::flourish(uint32_t color) {
+void PixelRing::flourish(uint8_t red, uint8_t green, uint8_t blue) {
   _ring.setBrightness(255);
 
-  for(uint16_t i=0; i<_ring.numPixels(); i++) {
-    _ring.setPixelColor(i, color);
-    _ring.show();
-    delay(50);
-  }
+  _animation = Flourish(_numberOfLEDs, red, green, blue);
 }
 
 void PixelRing::render() {
-  _ring.show(); // Initialize all pixels to 'off'
-}
+  std::vector<Led> leds = _animation.render();
 
-uint32_t PixelRing::Color(uint8_t r, uint8_t g, uint8_t b) {
-  return Adafruit_NeoPixel::Color(r, g, b);
-}
+  for (int i=0; i<leds.size(); i++) {
+    Led led = leds[i];
+    _ring.setPixelColor(led.ledNumber, _ring.Color(led.red, led.green, led.blue));
+  }
+  _ring.show();
 
-uint32_t PixelRing::RandomColor() {
-  uint8_t r = rand() % 255;
-  uint8_t g = rand() % 255;
-  uint8_t b = rand() % 255;
-  return PixelRing::Color(r, g, b);
+  _animation.tick(); // advance the flourish
 }

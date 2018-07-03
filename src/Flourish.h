@@ -5,11 +5,13 @@
 
 class Flourish {
 public:
-  Flourish(uint32_t color);
+  Flourish(uint8_t red, uint8_t green, uint8_t blue);
   bool complete();
   //    void renderFrame();
 private:
-  uint32_t _color;
+  uint8_t _red;
+  uint8_t _green;
+  uint8_t _blue;
 };
 
 #endif

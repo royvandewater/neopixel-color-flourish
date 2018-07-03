@@ -5,5 +5,7 @@ jobs:
       - image: circleci/node:10.5-browsers
     steps:
       - checkout
+      - run: git submodule init
+      - run: git submodule update
       - run: make
       - run: ./Flourish_test

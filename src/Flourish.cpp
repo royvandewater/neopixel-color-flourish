@@ -18,7 +18,7 @@ Flourish::Flourish(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 bool Flourish::complete() {
-  return _currentFrameNumber >= _numLeds;
+  return _currentFrameNumber >= (_numLeds + 6);
 }
 
 std::vector<Led> Flourish::render() {
@@ -35,7 +35,27 @@ Led Flourish::_renderLed(uint32_t ledNumber) {
   if (_currentFrameNumber <= ledNumber) {
     return Led(ledNumber, 0, 0, 0);
   }
-  return Led(ledNumber, _red, _green, _blue);
+  if (_currentFrameNumber <= (_numLeds + 1) || _currentFrameNumber > (_numLeds + 7)) {
+    return Led(ledNumber, _red, _green, _blue);
+  }
+
+  return Led(ledNumber, Flourish::_colorComponent(_red), Flourish::_colorComponent(_green), Flourish::_colorComponent(_blue));
+}
+
+uint8_t Flourish::_colorComponent(uint8_t color) {
+  uint16_t diff = 255 - color;
+  uint16_t step = diff / 3;
+  uint16_t stepNumber = _currentFrameNumber - (_numLeds + 1);
+
+  if (stepNumber > 3) {
+    return color + (step * (6 - stepNumber));
+  }
+
+  uint16_t colorComponent = color + (step * stepNumber);
+  if (colorComponent > 255) {
+    return 255;
+  }
+  return colorComponent;
 }
 
 void Flourish::tick() {

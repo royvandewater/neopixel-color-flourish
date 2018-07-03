@@ -20,6 +20,7 @@ private:
   uint32_t _currentFrameNumber;
 
   Led _renderLed(uint32_t ledNumber);
+  uint8_t _colorComponent(uint8_t color);
 };
 
 #endif

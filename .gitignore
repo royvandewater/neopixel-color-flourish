@@ -31,3 +31,4 @@
 *.out
 *.app
 vendor/googletest/
+Flourish_test

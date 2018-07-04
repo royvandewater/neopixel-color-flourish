@@ -1,18 +1,19 @@
-#ifndef Flourish_h
-#define Flourish_h
+#ifndef Pulse_h
+#define Pulse_h
 
-#include <vector>
 #include <stdint.h>
+#include <vector>
 #include "Animation.h"
 #include "Led.h"
 
-class Flourish: public Animation {
+class Pulse: public Animation {
 public:
-  Flourish();
-  Flourish(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue);
+  Pulse();
+  Pulse(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue);
   bool complete();
   std::vector<Led> render();
   void tick();
+
 private:
   uint8_t _numLeds;
   uint8_t _red;

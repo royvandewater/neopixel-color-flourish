@@ -21,7 +21,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Flourish_test
+TESTS = Flourish_test Pulse_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -76,3 +76,14 @@ Flourish_test : Flourish.o Flourish_test.o Led.o gtest_main.a
 
 Led.o: $(USER_DIR)/Led.cpp $(USER_DIR)/Led.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Led.cpp
+
+Pulse.o : $(USER_DIR)/Pulse.cpp $(USER_DIR)/Pulse.h \
+							$(USER_DIR)/Led.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Pulse.cpp
+
+Pulse_test.o : $(USER_DIR)/test/Pulse_test.cpp \
+                     $(USER_DIR)/Pulse.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Pulse_test.cpp
+
+Pulse_test : Pulse.o Pulse_test.o Led.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

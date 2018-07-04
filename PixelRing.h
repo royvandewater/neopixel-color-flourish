@@ -5,9 +5,10 @@
 #ifndef PixelRing_h
 #define PixelRing_h
 
-#include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
-#include <Flourish.h>
+#include "Arduino.h"
+#include "Animation.h"
+#include "Flourish.h"
 
 class PixelRing {
 public:
@@ -15,6 +16,7 @@ public:
   bool animationComplete();
   void begin();
   void flourish(uint8_t red, uint8_t green, uint8_t blue);
+  void pulse(uint8_t red, uint8_t green, uint8_t blue);
   void render();
 
 private:
@@ -22,7 +24,9 @@ private:
   int _numberOfLEDs;
   uint32_t _currentColor;
   Adafruit_NeoPixel _ring;
-  Flourish _animation;
+  Animation* _animation;
+
+  void setAnimation(Animation* _animation);
 };
 
 #endif

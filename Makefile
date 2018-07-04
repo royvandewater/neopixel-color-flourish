@@ -63,16 +63,16 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-Flourish.o : $(USER_DIR)/src/Flourish.cpp $(USER_DIR)/src/Flourish.h \
-							$(USER_DIR)/src/Led.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/Flourish.cpp
+Flourish.o : $(USER_DIR)/Flourish.cpp $(USER_DIR)/Flourish.h \
+							$(USER_DIR)/Led.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Flourish.cpp
 
 Flourish_test.o : $(USER_DIR)/test/Flourish_test.cpp \
-                     $(USER_DIR)/src/Flourish.h $(GTEST_HEADERS)
+                     $(USER_DIR)/Flourish.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Flourish_test.cpp
 
 Flourish_test : Flourish.o Flourish_test.o Led.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
-Led.o: $(USER_DIR)/src/Led.cpp $(USER_DIR)/src/Led.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/Led.cpp
+Led.o: $(USER_DIR)/Led.cpp $(USER_DIR)/Led.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Led.cpp

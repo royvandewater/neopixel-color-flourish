@@ -1,5 +1,5 @@
-#include "../src/Flourish.h"
-#include "../src/Led.h"
+#include "../Flourish.h"
+#include "../Led.h"
 #include "gtest/gtest.h"
 #include <vector>
 

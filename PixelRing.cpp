@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "PixelRing.h"
-#include <Flourish.h>
-#include <Led.h>
+#include "Flourish.h"
+#include "Led.h"
 
 PixelRing::PixelRing(uint8_t pin, uint8_t numberOfLEDs) {
   _ring = Adafruit_NeoPixel(numberOfLEDs, pin, NEO_GRB + NEO_KHZ800);

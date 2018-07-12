@@ -17,7 +17,7 @@ namespace {
     Pulse* sut = new Pulse(4, 255, 0, 0);
     std::vector<Led> leds = sut->render();
 
-    ASSERT_EQ(4, leds->size());
+    ASSERT_EQ(4, leds.size());
     ASSERT_EQ(Led(0, 255, 0, 0), leds[0]);
     ASSERT_EQ(Led(1, 255, 0, 0), leds[1]);
     ASSERT_EQ(Led(2, 255, 0, 0), leds[2]);
@@ -32,7 +32,7 @@ namespace {
       sut->tick();
     }
 
-    ASSERT_EQ(4, leds->size());
+    ASSERT_EQ(4, leds.size());
     ASSERT_EQ(Led(0, 127, 0, 0), leds[0]);
     ASSERT_EQ(Led(1, 127, 0, 0), leds[1]);
     ASSERT_EQ(Led(2, 127, 0, 0), leds[2]);

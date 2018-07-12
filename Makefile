@@ -11,6 +11,9 @@ GTEST_DIR = ./vendor/googletest/googletest
 # Where to find user code.
 USER_DIR = .
 
+# Where to find compiled artifacts
+TARGET_DIR = ./target
+
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
@@ -21,7 +24,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Flourish_test Pulse_test
+TESTS = $(TARGET_DIR)/Flourish_test $(TARGET_DIR)/Pulse_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -32,8 +35,17 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 
 all : $(TESTS)
 
+test: $(TARGET_DIR)/test
+	$(TARGET_DIR)/test
+
+Flourish_test: $(TARGET_DIR)/Flourish_test
+	$(TARGET_DIR)/Flourish_test
+
+Pulse_test: $(TARGET_DIR)/Pulse_test
+	$(TARGET_DIR)/Pulse_test
+
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -rf $(TARGET_DIR)/*
 
 # Builds gtest.a and gtest_main.a.
 
@@ -45,45 +57,43 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 # implementation details, the dependencies specified below are
 # conservative and not optimized.  This is fine as Google Test
 # compiles fast and for ordinary users its source rarely changes.
-gtest-all.o : $(GTEST_SRCS_)
+$(TARGET_DIR)/gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest-all.cc
+						$(GTEST_DIR)/src/gtest-all.cc -o $@
 
-gtest_main.o : $(GTEST_SRCS_)
+$(TARGET_DIR)/gtest_main.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest_main.cc
+						$(GTEST_DIR)/src/gtest_main.cc -o $@
 
-gtest.a : gtest-all.o
+$(TARGET_DIR)/gtest_main.a : $(TARGET_DIR)/gtest-all.o $(TARGET_DIR)/gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
-gtest_main.a : gtest-all.o gtest_main.o
-	$(AR) $(ARFLAGS) $@ $^
-
-# Builds a sample test.  A test should link with either gtest.a or
-# gtest_main.a, depending on whether it defines its own main()
-# function.
-
-Flourish.o : $(USER_DIR)/Flourish.cpp $(USER_DIR)/Flourish.h \
+$(TARGET_DIR)/Flourish.o : $(USER_DIR)/Flourish.cpp $(USER_DIR)/Flourish.h \
 							$(USER_DIR)/Led.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Flourish.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Flourish.cpp -o $@
 
-Flourish_test.o : $(USER_DIR)/test/Flourish_test.cpp \
-                     $(USER_DIR)/Flourish.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Flourish_test.cpp
+$(TARGET_DIR)/Flourish_test.o : $(USER_DIR)/test/Flourish_test.cpp \
+							$(USER_DIR)/Flourish.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Flourish_test.cpp -o $@
 
-Flourish_test : Flourish.o Flourish_test.o Led.o gtest_main.a
+$(TARGET_DIR)/Flourish_test : $(TARGET_DIR)/Flourish.o $(TARGET_DIR)/Flourish_test.o $(TARGET_DIR)/Led.o $(TARGET_DIR)/gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
-Led.o: $(USER_DIR)/Led.cpp $(USER_DIR)/Led.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Led.cpp
+$(TARGET_DIR)/Led.o: $(USER_DIR)/Led.cpp $(USER_DIR)/Led.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Led.cpp -o $@
 
-Pulse.o : $(USER_DIR)/Pulse.cpp $(USER_DIR)/Pulse.h \
+$(TARGET_DIR)/Pulse.o : $(USER_DIR)/Pulse.cpp $(USER_DIR)/Pulse.h \
 							$(USER_DIR)/Led.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Pulse.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/Pulse.cpp -o $@
 
-Pulse_test.o : $(USER_DIR)/test/Pulse_test.cpp \
-                     $(USER_DIR)/Pulse.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Pulse_test.cpp
+$(TARGET_DIR)/Pulse_test.o : $(USER_DIR)/test/Pulse_test.cpp \
+							$(USER_DIR)/Pulse.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/test/Pulse_test.cpp -o $@
 
-Pulse_test : Pulse.o Pulse_test.o Led.o gtest_main.a
+$(TARGET_DIR)/Pulse_test : $(TARGET_DIR)/Pulse.o $(TARGET_DIR)/Pulse_test.o $(TARGET_DIR)/Led.o $(TARGET_DIR)/gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+$(TARGET_DIR)/test : $(TARGET_DIR)/Flourish.o $(TARGET_DIR)/Flourish_test.o \
+										 $(TARGET_DIR)/Pulse.o $(TARGET_DIR)/Pulse_test.o $(TARGET_DIR)/Led.o \
+										 $(TARGET_DIR)/gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

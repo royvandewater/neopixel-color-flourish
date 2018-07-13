@@ -111,4 +111,18 @@ namespace {
     ASSERT_EQ(Led(2, 255, 170, 170), leds[2]);
     ASSERT_EQ(Led(3, 255, 170, 170), leds[3]);
   }
+
+  TEST(FlourishTest, renderAllDone) {
+    Flourish sut = Flourish(4, 255, 0, 0);
+    while (!sut.complete()) {
+      sut.tick();
+    }
+    std::vector<Led> leds = sut.render();
+
+    ASSERT_EQ(4, leds.size());
+    ASSERT_EQ(Led(0, 255, 0, 0), leds[0]);
+    ASSERT_EQ(Led(1, 255, 0, 0), leds[1]);
+    ASSERT_EQ(Led(2, 255, 0, 0), leds[2]);
+    ASSERT_EQ(Led(3, 255, 0, 0), leds[3]);
+  }
 }

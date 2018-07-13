@@ -16,14 +16,17 @@ public:
   PixelRing(uint8_t pin, uint8_t numberOfLEDs);
   bool animationComplete();
   void begin();
-  void flourish(uint8_t red, uint8_t green, uint8_t blue);
-  void pulse(uint8_t red, uint8_t green, uint8_t blue);
+  void flourish();
+  void pulse();
   void render();
+  void setColor(uint8_t red, uint8_t green, uint8_t blue);
 
 private:
   int _pin;
   int _numberOfLEDs;
-  uint32_t _currentColor;
+  uint8_t _red;
+  uint8_t _green;
+  uint8_t _blue;
   Adafruit_NeoPixel _ring;
   Animation* _animation;
   Flourish _flourish;

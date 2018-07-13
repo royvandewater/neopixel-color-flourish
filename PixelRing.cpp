@@ -11,6 +11,9 @@ PixelRing::PixelRing(uint8_t pin, uint8_t numberOfLEDs) {
   _flourish = Flourish(numberOfLEDs, 0, 0, 0);
   _pulse = Pulse(numberOfLEDs, 0, 0, 0);
   _animation = &_flourish;
+  _red = 0;
+  _green = 0;
+  _blue = 0;
 }
 
 bool PixelRing::animationComplete() {
@@ -23,13 +26,13 @@ void PixelRing::begin() {
   _ring.show();
 }
 
-void PixelRing::flourish(uint8_t red, uint8_t green, uint8_t blue) {
-  _flourish = Flourish(_numberOfLEDs, red, green, blue);
+void PixelRing::flourish() {
+  _flourish = Flourish(_numberOfLEDs, _red, _green, _blue);
   _animation = &_flourish;
 }
 
-void PixelRing::pulse(uint8_t red, uint8_t green, uint8_t blue) {
-  _pulse = Pulse(_numberOfLEDs, red, green, blue);
+void PixelRing::pulse() {
+  _pulse = Pulse(_numberOfLEDs, _red, _green, _blue);
   _animation = &_pulse;
 }
 
@@ -43,4 +46,10 @@ void PixelRing::render() {
   _ring.show();
 
   _animation->tick(); // advance the flourish
+}
+
+void PixelRing::setColor(uint8_t red, uint8_t green, uint8_t blue) {
+  _red = red;
+  _green = green;
+  _blue = blue;
 }

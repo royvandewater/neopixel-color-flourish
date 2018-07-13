@@ -43,6 +43,8 @@ Led Flourish::_renderLed(uint32_t ledNumber) {
 }
 
 uint8_t Flourish::_colorComponent(uint8_t color) {
+  if (Flourish::complete()) return color;
+
   uint16_t diff = 255 - color;
   uint16_t step = diff / 3;
   uint16_t stepNumber = _currentFrameNumber - (_numLeds + 1);

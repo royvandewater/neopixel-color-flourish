@@ -17,7 +17,7 @@ Pulse::Pulse(uint8_t numLeds, uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 bool Pulse::complete() {
-  return true;
+  return _currentFrameNumber > (8 * 4);
 }
 
 std::vector<Led> Pulse::render() {
@@ -35,23 +35,25 @@ void Pulse::tick() {
 }
 
 Led Pulse::_renderLed(uint32_t ledNumber) {
-  return Led(ledNumber, _red, _green, _blue);
-  // return Led(ledNumber, Pulse::_colorComponent(_red), PUlse::_colorComponent(_green), Pulse::_colorComponent(_blue));
+  return Led(ledNumber, Pulse::_colorComponent(_red), Pulse::_colorComponent(_green), Pulse::_colorComponent(_blue));
 }
 
 uint8_t Pulse::_colorComponent(uint8_t color) {
-  return color;
-  // uint16_t diff = 255 - color;
-  // uint16_t step = diff / 3;
-  // uint16_t stepNumber = _currentFrameNumber - (_numLeds + 1);
-  //
-  // if (stepNumber > 3) {
-  //   return color + (step * (6 - stepNumber));
-  // }
-  //
-  // uint16_t colorComponent = color + (step * stepNumber);
-  // if (colorComponent > 255) {
-  //   return 255;
-  // }
-  // return colorComponent;
+  uint8_t diff = color / 2;
+  float percent = Pulse::_percent();
+
+  return color - (percent * diff);
+}
+
+float Pulse::_percent() {
+  uint8_t step = Pulse::_step();
+
+  if (step <= 8) return (float)step / (float)8;
+  return (float)(16-step) / (float)8;
+}
+
+uint8_t Pulse::_step() {
+  if (_currentFrameNumber == 0) return 0;
+  if (_currentFrameNumber % 16 == 0) return 16;
+  return _currentFrameNumber % 16;
 }

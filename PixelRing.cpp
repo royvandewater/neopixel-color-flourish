@@ -8,7 +8,9 @@
 PixelRing::PixelRing(uint8_t pin, uint8_t numberOfLEDs) {
   _ring = Adafruit_NeoPixel(numberOfLEDs, pin, NEO_GRB + NEO_KHZ800);
   _numberOfLEDs = numberOfLEDs;
-  _animation = new Flourish(numberOfLEDs, 0, 0, 0);
+  _flourish = Flourish(numberOfLEDs, 0, 0, 0);
+  _pulse = Pulse(numberOfLEDs, 0, 0, 0);
+  _animation = &_flourish;
 }
 
 bool PixelRing::animationComplete() {
@@ -22,11 +24,13 @@ void PixelRing::begin() {
 }
 
 void PixelRing::flourish(uint8_t red, uint8_t green, uint8_t blue) {
-  setAnimation(new Flourish(_numberOfLEDs, red, green, blue));
+  _flourish = Flourish(_numberOfLEDs, red, green, blue);
+  _animation = &_flourish;
 }
 
 void PixelRing::pulse(uint8_t red, uint8_t green, uint8_t blue) {
-  setAnimation(new Pulse(_numberOfLEDs, red, green, blue));
+  _pulse = Pulse(_numberOfLEDs, red, green, blue);
+  _animation = &_pulse;
 }
 
 void PixelRing::render() {
@@ -39,9 +43,4 @@ void PixelRing::render() {
   _ring.show();
 
   _animation->tick(); // advance the flourish
-}
-
-void PixelRing::setAnimation(Animation* animation) {
-  delete _animation;
-  _animation = animation;
 }

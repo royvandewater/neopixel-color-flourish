@@ -9,6 +9,7 @@
 #include "Arduino.h"
 #include "Animation.h"
 #include "Flourish.h"
+#include "Pulse.h"
 
 class PixelRing {
 public:
@@ -25,6 +26,8 @@ private:
   uint32_t _currentColor;
   Adafruit_NeoPixel _ring;
   Animation* _animation;
+  Flourish _flourish;
+  Pulse _pulse;
 
   void setAnimation(Animation* _animation);
 };

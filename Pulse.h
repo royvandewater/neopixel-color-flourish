@@ -23,6 +23,8 @@ private:
 
   Led _renderLed(uint32_t ledNumber);
   uint8_t _colorComponent(uint8_t color);
+  float _percent();
+  uint8_t _step();
 };
 
 #endif
